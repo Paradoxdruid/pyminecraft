@@ -6,7 +6,7 @@ Usage: ./download-realm.py MINECRAFT-EMAIL MINECRAFT-PASSWORD
 
 
 You must have overviewer (https://github.com/overviewer/Minecraft-Overviewer/),
-as well as a working configuration file.  
+as well as a working configuration file.
 
 This script assumes you use ssh to access your remote map host.
 """
