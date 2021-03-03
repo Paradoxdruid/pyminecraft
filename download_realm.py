@@ -26,11 +26,11 @@ REALMS_SERVER: str = "https://pc.realms.minecraft.net/worlds"
 OUTPUT_FILE: str = "world.tar.gz"
 MC_VERSION: str = "1.16.5"
 WORLD_ID: int = 1  # change for different of multiple hosted realms
-LOCAL_MAP_LOCATION: str = "/home/andrew/overviewer/map-covidia/"
-RSYNC_USER: str = "bonham"
-RSYNC_HOST: str = "paradoxdruid.com"
-RSYNC_LOCATION: str = "~/paradoxdruid.com/meep/covidia"
-OVERVIEWER_CONFIG_FILE: str = "covidia-config.py"
+LOCAL_MAP_LOCATION: str = "/home/USER/overviewer/mc-map/"
+RSYNC_USER: str = "USER"
+RSYNC_HOST: str = "HOST.com"
+RSYNC_LOCATION: str = "~/HOST.com/mc-map"
+OVERVIEWER_CONFIG_FILE: str = "config.py"
 OVERVIEWER_CMD: str = "mc-ovw"
 
 
