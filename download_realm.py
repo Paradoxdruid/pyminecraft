@@ -34,6 +34,18 @@ OVERVIEWER_CONFIG_FILE: str = "config.py"
 OVERVIEWER_CMD: str = "mc-ovw"
 
 
+class bcolors:
+    HEADER = "\033[95m"
+    OKBLUE = "\033[94m"
+    OKCYAN = "\033[96m"
+    OKGREEN = "\033[92m"
+    WARNING = "\033[93m"
+    FAIL = "\033[91m"
+    ENDC = "\033[0m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
+
+   
 # Helper Functions
 def get_wrapper(url: str, cookies_dict: Dict[str, str]) -> Any:
     """Wrapper for requests.get, catching errors and giving json output.
@@ -137,6 +149,9 @@ def get_access_token(args: argparse.Namespace) -> Tuple[str, str, str]:
         "clientToken": CLIENT_TOKEN,
         "agent": {"name": "Minecraft", "version": "1"},
     }
+    print(
+        f"{bcolors.OKBLUE}{bcolors.UNDERLINE}Beginning Minecraft Realms Processing...{bcolors.ENDC}"
+    )
     data: Any = post_wrapper(AUTH_SERVER, payload)
 
     token: str = data.get("accessToken")
@@ -172,10 +187,10 @@ def download_realm(token: str, name: str, mc_id: str, backup_num: str = "1") -> 
     link: str = dl_data.get("downloadLink")
 
     # 3. download backup
-    print("Downloading...\n")
+    print(f"{bcolors.OKBLUE}Downloading...{bcolors.ENDC}\n")
     r: requests.models.Response = download_wrapper(link)
     open(OUTPUT_FILE, "wb").write(r.content)
-    print("Download successful")
+    print(f"{bcolors.OKGREEN}Download successful{bcolors.ENDC}")
 
 
 def unpack_download():
@@ -191,10 +206,10 @@ def run_overviewer(config=OVERVIEWER_CONFIG_FILE, overviewer_cmd=OVERVIEWER_CMD)
         config (str): config file to use with overviewer
         overviewer_cmd (str): name of overviewer command
     """
-    print("Running overviewer...\n")
+    print(f"{bcolors.OKBLUE}Running overviewer...{bcolors.ENDC}\n")
     _: str = subprocess_wrapper([overviewer_cmd, f"--config={config}"])
     _: str = subprocess_wrapper([overviewer_cmd, f"--config={config}", "--genpoi"])
-    print("\n\nOverviewer successful")
+    print(f"\n\n{bcolors.OKGREEN}Overviewer successful{bcolors.ENDC}")
 
 
 def upload_map(
@@ -203,11 +218,18 @@ def upload_map(
     host=RSYNC_HOST,
     location=RSYNC_LOCATION,
 ):
-    print("Starting rsync upload...\n")
+    print(f"{bcolors.OKBLUE}Starting rsync upload...{bcolors.ENDC}\n")
     _: str = subprocess_wrapper(
-        ["rsync", "-ae", "ssh", map_name, f"{user}@{host}:{location}"]
+        [
+            "rsync",
+            "--info=progress2",
+            "-ae",
+            "ssh",
+            map_name,
+            f"{user}@{host}:{location}",
+        ]
     )
-    print("\n\nUpload completed successfuly!")
+    print(f"\n\n{bcolors.OKGREEN}Upload completed successfuly!{bcolors.ENDC}")
 
 
 # #####################################################################################
