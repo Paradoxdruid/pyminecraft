@@ -15,6 +15,7 @@ import requests
 import argparse
 import shutil
 import subprocess
+from tqdm import tqdm
 from typing import Dict, Any, List, Tuple
 
 # CONSTANTS
@@ -109,7 +110,9 @@ def download_wrapper(url: str) -> requests.models.Response:
         requests.Response: response object
     """
     try:
-        r: requests.models.Response = requests.get(url, allow_redirects=True)
+        r: requests.models.Response = requests.get(
+            url, stream=True, allow_redirects=True
+        )
         r.raise_for_status()
     except requests.exceptions.HTTPError as e:
         raise SystemExit(e)
@@ -189,7 +192,15 @@ def download_realm(token: str, name: str, mc_id: str, backup_num: str = "1") -> 
     # 3. download backup
     print(f"{bcolors.OKBLUE}Downloading...{bcolors.ENDC}\n")
     r: requests.models.Response = download_wrapper(link)
-    open(OUTPUT_FILE, "wb").write(r.content)
+    with tqdm.wrapattr(
+        open(OUTPUT_FILE, "wb"),
+        "write",
+        miniters=1,
+        desc="World DL: ",
+        total=int(r.headers.get("content-length", 0)),
+    ) as fout:
+        for chunk in r.iter_content(chunk_size=4096):
+            fout.write(chunk)
     print(f"{bcolors.OKGREEN}Download successful{bcolors.ENDC}")
 
 
