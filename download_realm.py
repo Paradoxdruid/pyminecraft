@@ -46,7 +46,7 @@ class bcolors:
     BOLD = "\033[1m"
     UNDERLINE = "\033[4m"
 
-   
+
 # Helper Functions
 def get_wrapper(url: str, cookies_dict: Dict[str, str]) -> Any:
     """Wrapper for requests.get, catching errors and giving json output.
@@ -153,7 +153,8 @@ def get_access_token(args: argparse.Namespace) -> Tuple[str, str, str]:
         "agent": {"name": "Minecraft", "version": "1"},
     }
     print(
-        f"{bcolors.OKBLUE}{bcolors.UNDERLINE}Beginning Minecraft Realms Processing...{bcolors.ENDC}"
+        f"{bcolors.OKBLUE}{bcolors.UNDERLINE}"
+        + f"Beginning Minecraft Realms Processing...{bcolors.ENDC}"
     )
     data: Any = post_wrapper(AUTH_SERVER, payload)
 
@@ -185,7 +186,8 @@ def download_realm(token: str, name: str, mc_id: str, backup_num: str = "1") -> 
 
     # 2. get download link
     dl_data: Any = get_wrapper(
-        f"{REALMS_SERVER}/{world_id}/slot/{backup_num}/download", cookie_dict,
+        f"{REALMS_SERVER}/{world_id}/slot/{backup_num}/download",
+        cookie_dict,
     )
     link: str = dl_data.get("downloadLink")
 
